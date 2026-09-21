@@ -1,0 +1,161 @@
+{
+  "version": "1.0.0",
+  "app": "GLYPH",
+  "designTokens": {
+    "signalMetrics": {
+      "maxBubbleWidthRatio": 0.73,
+      "maxMonospaceColumns": 32,
+      "safeMonospaceColumns": 28,
+      "cornerRadiusStandalone": 18,
+      "cornerRadiusGroupedInner": 4,
+      "paddingHorizontal": 12,
+      "paddingVertical": 8,
+      "metadataOffsetTrailing": 8,
+      "bodyFontSize": 16,
+      "monoFontSize": 14.5
+    },
+    "colors": {
+      "dark": {
+        "canvas": "#121212",
+        "outgoingBubble": "#2C2C2E",
+        "outgoingAccent": "#2C6BED",
+        "incomingBubble": "#1F1F21",
+        "textPrimary": "#FFFFFF",
+        "textSecondary": "#8E8E93",
+        "codeBlock": "#18181A"
+      },
+      "light": {
+        "canvas": "#F6F6F6",
+        "outgoingBubble": "#2C6BED",
+        "incomingBubble": "#E9E9EB",
+        "textPrimary": "#000000",
+        "textOutgoing": "#FFFFFF",
+        "textSecondary": "#8E8E93",
+        "codeBlock": "#E5E5EA"
+      }
+    }
+  },
+  "typographyStyles": [
+    {
+      "id": "gothicBold",
+      "name": "Gothic Bold",
+      "sample": "𝕲𝖔𝖙𝖍𝖎𝖈 𝕭𝖔𝖑𝖉",
+      "upperOffset": "1D538",
+      "lowerOffset": "1D552"
+    },
+    {
+      "id": "gothic",
+      "name": "Gothic",
+      "sample": "𝔊𝔬𝔱𝔥𝔦𝔠",
+      "upperOffset": "1D504",
+      "lowerOffset": "1D51E"
+    },
+    {
+      "id": "cursiveBold",
+      "name": "Script Bold",
+      "sample": "𝓒𝓾𝓻𝓼𝓲𝓿𝓮 𝓑𝓸𝓵𝓭",
+      "upperOffset": "1D4D0",
+      "lowerOffset": "1D4EA"
+    },
+    {
+      "id": "cursive",
+      "name": "Script",
+      "sample": "𝒮𝒸𝓇𝒾𝓅𝓉",
+      "upperOffset": "1D49C",
+      "lowerOffset": "1D4B6"
+    },
+    {
+      "id": "doubleStruck",
+      "name": "Blackboard",
+      "sample": "𝔻𝕠𝕦𝕓𝕝𝕖-𝕊𝕥𝕣𝕦𝕔𝕜",
+      "upperOffset": "1D538",
+      "lowerOffset": "1D552",
+      "digitsOffset": "1D7D8"
+    },
+    {
+      "id": "sansBold",
+      "name": "Sans Bold",
+      "sample": "𝗦𝗮𝗻𝘀 𝗕𝗼𝗹𝗱",
+      "upperOffset": "1D5D4",
+      "lowerOffset": "1D5EE",
+      "digitsOffset": "1D7EC"
+    },
+    {
+      "id": "monospace",
+      "name": "Typewriter",
+      "sample": "𝙼𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎",
+      "upperOffset": "1D670",
+      "lowerOffset": "1D68A",
+      "digitsOffset": "1D7F6"
+    },
+    {
+      "id": "smallCaps",
+      "name": "Small Caps",
+      "sample": "ꜱᴍᴀʟʟ ᴄᴀᴘꜱ"
+    }
+  ],
+  "glyphVault": {
+    "sigils": [
+      { "symbol": "𓆩 𖤍 𓆪", "name": "Winged Emblem", "category": "occult" },
+      { "symbol": "𓆩 ⚡︎ 𓆪", "name": "Winged Lightning", "category": "occult" },
+      { "symbol": "𓆩 ⚔︎ 𓆪", "name": "Winged Blades", "category": "occult" },
+      { "symbol": "𓆩 ✧ 𓆪", "name": "Winged Starlight", "category": "occult" },
+      { "symbol": "ᯓ★", "name": "Comet Star", "category": "celestial" },
+      { "symbol": "𖤍", "name": "Solar Sigil", "category": "sacred" },
+      { "symbol": "𖣐", "name": "Orbital Blossom", "category": "sacred" },
+      { "symbol": "𖦹", "name": "Hypnotic Spiral", "category": "sacred" },
+      { "symbol": "🜏", "name": "Alchemical Sulfur", "category": "alchemical" },
+      { "symbol": "🜚", "name": "Alchemical Gold", "category": "alchemical" },
+      { "symbol": "༺", "name": "Tibetan Left Bracket", "category": "tibetan" },
+      { "symbol": "༻", "name": "Tibetan Right Bracket", "category": "tibetan" },
+      { "symbol": "࿇", "name": "Tibetan Cross", "category": "tibetan" },
+      { "symbol": "⏣", "name": "Benzene Hexagon", "category": "cyber" },
+      { "symbol": "⎔", "name": "Tactical Diamond", "category": "cyber" },
+      { "symbol": "⣿", "name": "Braille Full Block", "category": "brailleWave" }
+    ],
+    "shadingBlocks": [
+      { "symbol": "░", "name": "Light Shade (25%)" },
+      { "symbol": "▒", "name": "Medium Shade (50%)" },
+      { "symbol": "▓", "name": "Dark Shade (75%)" },
+      { "symbol": "█", "name": "Full Solid Block" },
+      { "symbol": "▀", "name": "Upper Half Block" },
+      { "symbol": "▄", "name": "Lower Half Block" },
+      { "symbol": "▌", "name": "Left Half Block" },
+      { "symbol": "▐", "name": "Right Half Block" }
+    ],
+    "boxDrawing": {
+      "rounded": {
+        "topLeft": "╭",
+        "topRight": "╮",
+        "bottomLeft": "╰",
+        "bottomRight": "╯",
+        "horizontal": "━",
+        "vertical": "┃"
+      },
+      "heavy": {
+        "topLeft": "┏",
+        "topRight": "┓",
+        "bottomLeft": "┗",
+        "bottomRight": "┛",
+        "horizontal": "━",
+        "vertical": "┃"
+      },
+      "double": {
+        "topLeft": "╔",
+        "topRight": "╗",
+        "bottomLeft": "╚",
+        "bottomRight": "╝",
+        "horizontal": "═",
+        "vertical": "║"
+      }
+    },
+    "calibratedDividers": [
+      { "content": "░░▒▒▓▓████████████▓▓▒▒░░", "columns": 22, "certifiedMobileSafe": true },
+      { "content": "╍╍╍╍╍ ❖ ╍╍╍╍╍", "columns": 15, "certifiedMobileSafe": true },
+      { "content": "░▒▓█ 𖤍 █▓▒░", "columns": 13, "certifiedMobileSafe": true },
+      { "content": "✦ ── ✦ ── ✦ ── ✦", "columns": 17, "certifiedMobileSafe": true },
+      { "content": "┈┈━═☆═━┈┈", "columns": 11, "certifiedMobileSafe": true },
+      { "content": "ᚐᚑᚒᚓᚔ ⚔︎ ᚔᚓᚒᚑᚐ", "columns": 15, "certifiedMobileSafe": true }
+    ]
+  }
+}

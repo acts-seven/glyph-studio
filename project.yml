@@ -1,0 +1,72 @@
+name: GLYPH
+options:
+  bundleIdPrefix: com.glyphstudio
+  deploymentTarget:
+    macOS: "15.0"
+    iOS: "18.0"
+
+settings:
+  SWIFT_VERSION: "6.0"
+  SWIFT_STRICT_CONCURRENCY: complete
+
+targets:
+  GLYPHCore:
+    type: framework
+    platform: macOS
+    sources:
+      - path: Sources/GLYPHCore
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.glyphstudio.core
+      PRODUCT_NAME: GLYPHCore
+      PRODUCT_MODULE_NAME: GLYPHCore
+      GENERATE_INFOPLIST_FILE: YES
+
+  GLYPHApp:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/GLYPHApp
+    dependencies:
+      - target: GLYPHCore
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.glyphstudio.app
+      INFOPLIST_KEY_CFBundleDisplayName: "GLYPH Studio"
+      GENERATE_INFOPLIST_FILE: YES
+
+  GLYPHCore_iOS:
+    type: framework
+    platform: iOS
+    sources:
+      - path: Sources/GLYPHCore
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.glyphstudio.core.ios
+      PRODUCT_NAME: GLYPHCore
+      PRODUCT_MODULE_NAME: GLYPHCore
+      GENERATE_INFOPLIST_FILE: YES
+
+  GLYPHApp_iOS:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources/GLYPHApp
+    dependencies:
+      - target: GLYPHCore_iOS
+      - target: GLYPHKeyboard
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.glyphstudio.app.ios
+      INFOPLIST_KEY_CFBundleDisplayName: "GLYPH"
+      GENERATE_INFOPLIST_FILE: YES
+      INFOPLIST_KEY_UILaunchScreen_Generation: YES
+
+  GLYPHKeyboard:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Sources/GLYPHKeyboard/KeyboardViewController.swift
+    dependencies:
+      - target: GLYPHCore_iOS
+    info:
+      path: Sources/GLYPHKeyboard/Info.plist
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.glyphstudio.app.ios.keyboard
+      INFOPLIST_KEY_CFBundleDisplayName: "GLYPH Keyboard"

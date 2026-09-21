@@ -24,6 +24,27 @@ public struct ComposerPane: View {
                     }
                 }
                 
+                Button(action: { state.autoArchitect() }) {
+                    HStack(spacing: 5) {
+                        Image(systemName: "wand.and.stars")
+                        Text("✨ Auto-Architect")
+                    }
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(
+                        LinearGradient(
+                            colors: [Color(hex: "#8A2387"), Color(hex: "#E94057"), Color(hex: "#F27121")],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(Capsule())
+                    .shadow(color: Color.orange.opacity(0.3), radius: 4, x: 0, y: 2)
+                }
+                .buttonStyle(.plain)
+                
                 Spacer()
                 
                 // Wrap Safety Status Badge

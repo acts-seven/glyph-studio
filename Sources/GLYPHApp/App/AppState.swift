@@ -75,6 +75,11 @@ public final class AppState {
         )
     }
     
+    public func autoArchitect() {
+        let parsed = SemanticHierarchyParser.parse(rawText: currentText)
+        currentText = HierarchicalThemeFormatter.format(document: parsed, fontStyle: activeStyle)
+    }
+    
     public func insertGlyph(_ glyph: String) {
         currentText.append(glyph + " ")
     }

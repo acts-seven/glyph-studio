@@ -34,10 +34,12 @@ public final class AppState {
 """
     
     public var activeStyle: TypographyStyle = .frakturBold
-    public var isLiveTyping: Bool = true
+    public var selectedTheme: ArchitecturalTheme = .obeliskGothic
+    public var isLiveTyping: Bool = false
     public var isDarkMode: Bool = true
     public var simulatedWidth: CGFloat = 393 // iPhone 16 Pro default
     public var showCopiedBanner: Bool = false
+    public var bannerMessage: String = "Copied to Clipboard"
     
     public var lineReports: [LineSafetyReport] {
         WrapToleranceSensor.inspect(text: currentText)
@@ -55,15 +57,41 @@ public final class AppState {
         UIPasteboard.general.string = currentText
         #endif
         
-        withAnimation(.easeInOut(duration: 0.2)) {
-            showCopiedBanner = true
+        showNotificationBanner(message: "Copied to Clipboard! Ready for Signal")
+    }
+    
+    public func readFromClipboard() -> String? {
+        #if os(macOS)
+        return NSPasteboard.general.string(forType: .string)
+        #else
+        return UIPasteboard.general.string
+        #endif
+    }
+    
+    public func pasteAndArchitect() {
+        guard let clipboardText = readFromClipboard(), !clipboardText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            showNotificationBanner(message: "Clipboard is empty!")
+            return
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            withAnimation {
-                self.showCopiedBanner = false
-            }
-        }
+        let parsed = SemanticHierarchyParser.parse(rawText: clipboardText)
+        currentText = HierarchicalThemeFormatter.format(
+            document: parsed,
+            theme: selectedTheme,
+            fontStyle: activeStyle
+        )
+        showNotificationBanner(message: "✨ Auto-Architected from Clipboard!")
+    }
+    
+    public func autoArchitect(theme: ArchitecturalTheme? = nil) {
+        let themeToUse = theme ?? selectedTheme
+        let parsed = SemanticHierarchyParser.parse(rawText: currentText)
+        currentText = HierarchicalThemeFormatter.format(
+            document: parsed,
+            theme: themeToUse,
+            fontStyle: activeStyle
+        )
+        showNotificationBanner(message: "✨ Formatted with \(themeToUse.rawValue)")
     }
     
     public func applyProceduralRoll(vibe: ProceduralVibe) {
@@ -73,14 +101,33 @@ public final class AppState {
             vibe: vibe,
             fontStyle: activeStyle
         )
+        showNotificationBanner(message: "🎲 Rolled \(vibe.rawValue)")
     }
     
-    public func autoArchitect() {
-        let parsed = SemanticHierarchyParser.parse(rawText: currentText)
-        currentText = HierarchicalThemeFormatter.format(document: parsed, fontStyle: activeStyle)
+    public func applyPreset(_ preset: SignalPostPreset) {
+        currentText = preset.rawContent.trimmingCharacters(in: .whitespacesAndNewlines)
+        showNotificationBanner(message: "Loaded '\(preset.title)'")
+    }
+    
+    public func transcodeAllText(to style: TypographyStyle) {
+        currentText = UnicodeFontConverter.shared.convert(currentText, to: style)
+        showNotificationBanner(message: "Transcoded to \(style.rawValue)")
     }
     
     public func insertGlyph(_ glyph: String) {
         currentText.append(glyph + " ")
+    }
+    
+    private func showNotificationBanner(message: String) {
+        bannerMessage = message
+        withAnimation(.easeInOut(duration: 0.2)) {
+            showCopiedBanner = true
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            withAnimation {
+                self.showCopiedBanner = false
+            }
+        }
     }
 }

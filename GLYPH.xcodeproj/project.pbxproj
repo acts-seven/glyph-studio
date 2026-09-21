@@ -19,6 +19,8 @@
 		3C58EDA2E9A7449D1C431153 /* GLYPHCore_iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E97C303512AFAC46FB59E290 /* GLYPHCore_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4AB3DA240D0B759E8C1D5EF0 /* GLYPHApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21AE241A5C9230C49CD784A4 /* GLYPHApp.swift */; };
 		5064E5594D26B4DACB0DD2CC /* ComposerPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DEB0F6DF88C21D328447E /* ComposerPane.swift */; };
+		506D1CF60E1E70C32EEA581A /* PresetsLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CA6640FAD68AD03CFAAC2 /* PresetsLibrary.swift */; };
+		5889FFC4348C5AD7FD776B6A /* PresetsLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CA6640FAD68AD03CFAAC2 /* PresetsLibrary.swift */; };
 		69CB55DB171F29DE0FA52990 /* SignalMirrorPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7259E33F40C7D457BAB8A4 /* SignalMirrorPane.swift */; };
 		79BAF863E03639B7D69A47D3 /* ComposerPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DEB0F6DF88C21D328447E /* ComposerPane.swift */; };
 		7FAE98C92B6E04B0AC62D99B /* ProceduralMonolithGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2FA141921F2C08792ED364 /* ProceduralMonolithGenerator.swift */; };
@@ -124,6 +126,7 @@
 		48238EADC2A371280F5DE111 /* EngulfingScrollLayoutEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngulfingScrollLayoutEngine.swift; sourceTree = "<group>"; };
 		4A66DCF18A40A47AAD461E74 /* GLYPHCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GLYPHCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A108A3EA458222982337DEDB /* DesignTokens.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DesignTokens.json; sourceTree = "<group>"; };
+		A65CA6640FAD68AD03CFAAC2 /* PresetsLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetsLibrary.swift; sourceTree = "<group>"; };
 		AE4095F120C9F06972F8B2E1 /* UnicodeFontConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnicodeFontConverter.swift; sourceTree = "<group>"; };
 		B0E87CE3587E5CC02D149087 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		B2695BA25DA2F7EF795A151D /* SemanticHierarchyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticHierarchyParser.swift; sourceTree = "<group>"; };
@@ -239,6 +242,7 @@
 				48238EADC2A371280F5DE111 /* EngulfingScrollLayoutEngine.swift */,
 				219DA5B20549FBC907995FC3 /* HierarchicalThemeFormatter.swift */,
 				41A10922E0CE82EFE9052ACE /* LiveKeystrokeTranscoder.swift */,
+				A65CA6640FAD68AD03CFAAC2 /* PresetsLibrary.swift */,
 				BF2FA141921F2C08792ED364 /* ProceduralMonolithGenerator.swift */,
 				B2695BA25DA2F7EF795A151D /* SemanticHierarchyParser.swift */,
 				AE4095F120C9F06972F8B2E1 /* UnicodeFontConverter.swift */,
@@ -438,6 +442,7 @@
 				25E11C9607926BDFD72CBB90 /* GlyphModels.swift in Sources */,
 				C28C42D509552BC925E76A45 /* HierarchicalThemeFormatter.swift in Sources */,
 				CF6E4BFE5A5F6C31597CA236 /* LiveKeystrokeTranscoder.swift in Sources */,
+				5889FFC4348C5AD7FD776B6A /* PresetsLibrary.swift in Sources */,
 				0F8391351DBC61255A498375 /* ProceduralMonolithGenerator.swift in Sources */,
 				E7C2740B283517CDD4239DD5 /* SemanticHierarchyParser.swift in Sources */,
 				E34FA1B7DEAA4E21273D1F26 /* UnicodeFontConverter.swift in Sources */,
@@ -466,6 +471,7 @@
 				AB922485E97D7D67E7E17A57 /* GlyphModels.swift in Sources */,
 				C0A655E26E9467229BBC2FF3 /* HierarchicalThemeFormatter.swift in Sources */,
 				F7C388F112FA230BAE95A895 /* LiveKeystrokeTranscoder.swift in Sources */,
+				506D1CF60E1E70C32EEA581A /* PresetsLibrary.swift in Sources */,
 				7FAE98C92B6E04B0AC62D99B /* ProceduralMonolithGenerator.swift in Sources */,
 				A1876D044A9C2B61235D21F7 /* SemanticHierarchyParser.swift in Sources */,
 				0D397196F497680A8CC44188 /* UnicodeFontConverter.swift in Sources */,

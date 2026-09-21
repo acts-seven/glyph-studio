@@ -11,12 +11,12 @@ public struct SplitStudioView: View {
             #if os(macOS)
             HSplitView {
                 ComposerPane(state: state)
-                    .frame(minWidth: 360)
+                    .frame(minWidth: 380)
                 
                 SignalMirrorPane(state: state)
                     .frame(minWidth: 360)
             }
-            .frame(minWidth: 760, minHeight: 520)
+            .frame(minWidth: 800, minHeight: 560)
             #else
             ViewThatFits {
                 HStack(spacing: 0) {
@@ -34,14 +34,14 @@ public struct SplitStudioView: View {
         }
         .overlay(alignment: .top) {
             if state.showCopiedBanner {
-                Text("Copied for Signal with Zero-Wrap Guarantee!")
+                Text(state.bannerMessage)
                     .font(.system(size: 13, weight: .bold))
                     .foregroundColor(.white)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
                     .background(Color.black.opacity(0.85))
                     .clipShape(Capsule())
-                    .overlay(Capsule().stroke(Color.green, lineWidth: 1))
+                    .overlay(Capsule().stroke(Color(hex: "#0A84FF"), lineWidth: 1))
                     .shadow(radius: 8)
                     .padding(.top, 16)
                     .transition(.move(edge: .top).combined(with: .opacity))

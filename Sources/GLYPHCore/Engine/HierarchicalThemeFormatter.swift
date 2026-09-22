@@ -106,6 +106,14 @@ public struct HierarchicalThemeFormatter: Sendable {
             }
         }
         
+        if !document.operationalNotes.isEmpty {
+            lines.append("  ╍╍╍╍╍ ❖ ╍╍╍╍╍")
+            for note in document.operationalNotes {
+                lines.append("┠ \(fitText(note, maxVisualWidth: 21))")
+            }
+            lines.append("")
+        }
+        
         lines.append("      ░▒▓█ 𖤍 █▓▒░")
         lines.append("    ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀")
         lines.append("     ╲ \(center(styledTitle, width: 11)) ╱")

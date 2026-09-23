@@ -11,6 +11,7 @@
 		0D397196F497680A8CC44188 /* UnicodeFontConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4095F120C9F06972F8B2E1 /* UnicodeFontConverter.swift */; };
 		0F8391351DBC61255A498375 /* ProceduralMonolithGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2FA141921F2C08792ED364 /* ProceduralMonolithGenerator.swift */; };
 		124D2CF37D35DDB8A1967B8E /* GLYPHCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A66DCF18A40A47AAD461E74 /* GLYPHCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		16A66923B966142AC3DF97B7 /* GLYPHCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A66DCF18A40A47AAD461E74 /* GLYPHCore.framework */; };
 		21730E277F51FDF042F9ABD4 /* GLYPHCore_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E97C303512AFAC46FB59E290 /* GLYPHCore_iOS.framework */; };
 		25E11C9607926BDFD72CBB90 /* GlyphModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C5A6CDB97EA6AD9CC95AA /* GlyphModels.swift */; };
 		26D12ACCC6732721A76659AE /* GLYPHCore_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E97C303512AFAC46FB59E290 /* GLYPHCore_iOS.framework */; };
@@ -24,6 +25,7 @@
 		69CB55DB171F29DE0FA52990 /* SignalMirrorPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7259E33F40C7D457BAB8A4 /* SignalMirrorPane.swift */; };
 		79BAF863E03639B7D69A47D3 /* ComposerPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DEB0F6DF88C21D328447E /* ComposerPane.swift */; };
 		7FAE98C92B6E04B0AC62D99B /* ProceduralMonolithGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2FA141921F2C08792ED364 /* ProceduralMonolithGenerator.swift */; };
+		8294A4A7B748D008FCFDAD26 /* GLYPHCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A66DCF18A40A47AAD461E74 /* GLYPHCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A3E44BD36F8ED4E63DF19C9 /* SplitStudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7289B35F2348A829808D9 /* SplitStudioView.swift */; };
 		8E1B358C4251421BCE932636 /* DesignTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = A108A3EA458222982337DEDB /* DesignTokens.json */; };
 		9135659CCDE3AFD2584518DD /* EngulfingScrollLayoutEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48238EADC2A371280F5DE111 /* EngulfingScrollLayoutEngine.swift */; };
@@ -40,6 +42,7 @@
 		CF6E4BFE5A5F6C31597CA236 /* LiveKeystrokeTranscoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A10922E0CE82EFE9052ACE /* LiveKeystrokeTranscoder.swift */; };
 		E321353D1FFC47EA09A8AA26 /* EngulfingScrollLayoutEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48238EADC2A371280F5DE111 /* EngulfingScrollLayoutEngine.swift */; };
 		E34FA1B7DEAA4E21273D1F26 /* UnicodeFontConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4095F120C9F06972F8B2E1 /* UnicodeFontConverter.swift */; };
+		E3A03D1832AAABF3DAF11B3B /* GLYPHCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E6C9BE99D250253BD1B11C /* GLYPHCoreTests.swift */; };
 		E7C2740B283517CDD4239DD5 /* SemanticHierarchyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2695BA25DA2F7EF795A151D /* SemanticHierarchyParser.swift */; };
 		E9ECA06CB195F0817118EC8E /* GLYPHApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21AE241A5C9230C49CD784A4 /* GLYPHApp.swift */; };
 		EA00F42FECE07DC6785E6270 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E87CE3587E5CC02D149087 /* KeyboardViewController.swift */; };
@@ -77,9 +80,27 @@
 			remoteGlobalIDString = 7FE88173542B3F138BC1DCCF;
 			remoteInfo = GLYPHCore_iOS;
 		};
+		D59E86F40579D433C58E99F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 782E06227B31A292A866A20C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1FC4965BEC7D11D1E65CE0B7;
+			remoteInfo = GLYPHCore;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		48115E53AD4F8D844CAED293 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8294A4A7B748D008FCFDAD26 /* GLYPHCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AF3531081202195D660EBE2B /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -125,6 +146,7 @@
 		41A10922E0CE82EFE9052ACE /* LiveKeystrokeTranscoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveKeystrokeTranscoder.swift; sourceTree = "<group>"; };
 		48238EADC2A371280F5DE111 /* EngulfingScrollLayoutEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngulfingScrollLayoutEngine.swift; sourceTree = "<group>"; };
 		4A66DCF18A40A47AAD461E74 /* GLYPHCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GLYPHCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		65E6C9BE99D250253BD1B11C /* GLYPHCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLYPHCoreTests.swift; sourceTree = "<group>"; };
 		A108A3EA458222982337DEDB /* DesignTokens.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DesignTokens.json; sourceTree = "<group>"; };
 		A65CA6640FAD68AD03CFAAC2 /* PresetsLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetsLibrary.swift; sourceTree = "<group>"; };
 		AE4095F120C9F06972F8B2E1 /* UnicodeFontConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnicodeFontConverter.swift; sourceTree = "<group>"; };
@@ -132,6 +154,7 @@
 		B2695BA25DA2F7EF795A151D /* SemanticHierarchyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticHierarchyParser.swift; sourceTree = "<group>"; };
 		BF2FA141921F2C08792ED364 /* ProceduralMonolithGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceduralMonolithGenerator.swift; sourceTree = "<group>"; };
 		C6A7289B35F2348A829808D9 /* SplitStudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitStudioView.swift; sourceTree = "<group>"; };
+		CE9967F31F9488C66DFF1479 /* GLYPHCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GLYPHCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D45DEB0F6DF88C21D328447E /* ComposerPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerPane.swift; sourceTree = "<group>"; };
 		DF92A892F3D3C9F2013212F5 /* GLYPHKeyboard.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = GLYPHKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E97C303512AFAC46FB59E290 /* GLYPHCore_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GLYPHCore_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,6 +177,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				26D12ACCC6732721A76659AE /* GLYPHCore_iOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBF39E391295CB9198680EDA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16A66923B966142AC3DF97B7 /* GLYPHCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +246,15 @@
 			path = Sources/GLYPHApp;
 			sourceTree = "<group>";
 		};
+		5ECDD0051642E1B00E01C7FA /* GLYPHCoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				65E6C9BE99D250253BD1B11C /* GLYPHCoreTests.swift */,
+			);
+			name = GLYPHCoreTests;
+			path = Tests/GLYPHCoreTests;
+			sourceTree = "<group>";
+		};
 		88764EF5818C54C1F5A25F24 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -230,6 +270,7 @@
 				EFDBA4324BC4A43C8878C1E6 /* GLYPHApp.app */,
 				E97C303512AFAC46FB59E290 /* GLYPHCore_iOS.framework */,
 				4A66DCF18A40A47AAD461E74 /* GLYPHCore.framework */,
+				CE9967F31F9488C66DFF1479 /* GLYPHCoreTests.xctest */,
 				DF92A892F3D3C9F2013212F5 /* GLYPHKeyboard.appex */,
 			);
 			name = Products;
@@ -256,6 +297,7 @@
 			children = (
 				550D9D2DF1A600A8AE59ABEC /* GLYPHApp */,
 				0815AE65CA03A3C6C1716648 /* GLYPHCore */,
+				5ECDD0051642E1B00E01C7FA /* GLYPHCoreTests */,
 				FFB96642FF460279C2DC006B /* GLYPHKeyboard */,
 				9F945C2557797D7B4DC967B6 /* Products */,
 			);
@@ -282,6 +324,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		142030D1172BC2FB23A77303 /* GLYPHCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A7562F756158A157A120A64 /* Build configuration list for PBXNativeTarget "GLYPHCoreTests" */;
+			buildPhases = (
+				3632D3070C16703F54B18E35 /* Sources */,
+				DBF39E391295CB9198680EDA /* Frameworks */,
+				48115E53AD4F8D844CAED293 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C22DA6325777E52E1B5EA998 /* PBXTargetDependency */,
+			);
+			name = GLYPHCoreTests;
+			packageProductDependencies = (
+			);
+			productName = GLYPHCoreTests;
+			productReference = CE9967F31F9488C66DFF1479 /* GLYPHCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		1FC4965BEC7D11D1E65CE0B7 /* GLYPHCore */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0C56813BBD44300A332CB710 /* Build configuration list for PBXNativeTarget "GLYPHCore" */;
@@ -409,6 +471,7 @@
 				7FE88173542B3F138BC1DCCF /* GLYPHCore_iOS */,
 				980555D73FFFACEF36E07F85 /* GLYPHApp_iOS */,
 				6A162F84D0E1AAA26804D230 /* GLYPHKeyboard */,
+				142030D1172BC2FB23A77303 /* GLYPHCoreTests */,
 			);
 		};
 /* End PBXProject section */
@@ -433,6 +496,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3632D3070C16703F54B18E35 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E3A03D1832AAABF3DAF11B3B /* GLYPHCoreTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6619DEE223E4BE14A3F9977D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -517,6 +588,11 @@
 			target = 1FC4965BEC7D11D1E65CE0B7 /* GLYPHCore */;
 			targetProxy = 43C1229BEBCF86D5CF29913D /* PBXContainerItemProxy */;
 		};
+		C22DA6325777E52E1B5EA998 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1FC4965BEC7D11D1E65CE0B7 /* GLYPHCore */;
+			targetProxy = D59E86F40579D433C58E99F7 /* PBXContainerItemProxy */;
+		};
 		D33D3A64926114E35C7F6BBD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 7FE88173542B3F138BC1DCCF /* GLYPHCore_iOS */;
@@ -550,6 +626,22 @@
 			};
 			name = Release;
 		};
+		17772E58920C04BEB1832F56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.glyphstudio.core.tests;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
 		196E92ADBC9285FDB1BD06A2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -563,6 +655,22 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.glyphstudio.app.ios.keyboard;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2F0C6AE48EF807FC57A0DC32 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.glyphstudio.core.tests;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -854,6 +962,15 @@
 			buildConfigurations = (
 				83813E8DF9D959E304755B4C /* Debug */,
 				11B7CC4966090BCC029EACE3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		1A7562F756158A157A120A64 /* Build configuration list for PBXNativeTarget "GLYPHCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				17772E58920C04BEB1832F56 /* Debug */,
+				2F0C6AE48EF807FC57A0DC32 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

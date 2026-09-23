@@ -70,3 +70,24 @@ targets:
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.glyphstudio.app.ios.keyboard
       INFOPLIST_KEY_CFBundleDisplayName: "GLYPH Keyboard"
+
+  GLYPHCoreTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests/GLYPHCoreTests
+    dependencies:
+      - target: GLYPHCore
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.glyphstudio.core.tests
+      GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  GLYPHCoreTests:
+    build:
+      targets:
+        GLYPHCore: all
+        GLYPHCoreTests: [test]
+    test:
+      targets:
+        - GLYPHCoreTests

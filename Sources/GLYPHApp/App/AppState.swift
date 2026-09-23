@@ -37,6 +37,7 @@ public final class AppState {
     public var selectedTheme: ArchitecturalTheme = .obeliskGothic
     public var isLiveTyping: Bool = false
     public var isDarkMode: Bool = true
+    public var isMonospacePreview: Bool = false
     public var simulatedWidth: CGFloat = 393 // iPhone 16 Pro default
     public var showCopiedBanner: Bool = false
     public var bannerMessage: String = "Copied to Clipboard"
@@ -120,12 +121,15 @@ public final class AppState {
     
     private func showNotificationBanner(message: String) {
         bannerMessage = message
-        withAnimation(.easeInOut(duration: 0.2)) {
+        #if canImport(UIKit) && !os(watchOS)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        #endif
+        withAnimation(.spring(response: 0.35, dampingFraction: 0.78)) {
             showCopiedBanner = true
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            withAnimation {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
                 self.showCopiedBanner = false
             }
         }

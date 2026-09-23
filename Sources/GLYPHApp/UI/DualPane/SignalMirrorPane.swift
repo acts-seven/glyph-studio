@@ -24,6 +24,14 @@ public struct SignalMirrorPane: View {
                 
                 Spacer()
                 
+                // Monospace / Proportional Font Toggle
+                Button(action: { state.isMonospacePreview.toggle() }) {
+                    Image(systemName: state.isMonospacePreview ? "character.textbox" : "textformat")
+                        .foregroundColor(state.isMonospacePreview ? Color(hex: "#2C6BED") : .gray)
+                }
+                .buttonStyle(.plain)
+                .help(state.isMonospacePreview ? "Switch to Proportional (Signal Default)" : "Switch to Monospace Preview")
+                
                 // Dark/Light Mode Toggle
                 Button(action: { state.isDarkMode.toggle() }) {
                     Image(systemName: state.isDarkMode ? "moon.fill" : "sun.max.fill")
@@ -48,7 +56,7 @@ public struct SignalMirrorPane: View {
                         
                         VStack(alignment: .trailing, spacing: 4) {
                             Text(state.currentText.isEmpty ? "Preview appears here..." : state.currentText)
-                                .font(.system(size: 15, weight: .regular))
+                                .font(.system(size: 15, weight: .regular, design: state.isMonospacePreview ? .monospaced : .default))
                                 .foregroundColor(state.currentText.isEmpty ? .gray : .white)
                                 .lineSpacing(3)
                                 .padding(.horizontal, 12)
@@ -97,16 +105,17 @@ public struct SignalMirrorPane: View {
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
                 .buttonStyle(.plain)
+                .keyboardShortcut("c", modifiers: [.command, .shift])
                 
                 Spacer()
                 
                 Picker("Screen Size", selection: $state.simulatedWidth) {
-                    Text("SE (320pt)").tag(CGFloat(320))
+                    Text("SE (375pt)").tag(CGFloat(375))
                     Text("16 Pro (393pt)").tag(CGFloat(393))
-                    Text("Max (430pt)").tag(CGFloat(430))
+                    Text("16 Pro Max (440pt)").tag(CGFloat(440))
                 }
                 .pickerStyle(.segmented)
-                .frame(width: 240)
+                .frame(width: 270)
             }
             .padding(10)
             .background(state.isDarkMode ? Color(hex: "#18181A") : Color.white)

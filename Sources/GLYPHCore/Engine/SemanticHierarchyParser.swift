@@ -88,6 +88,21 @@ public struct SemanticHierarchyParser: Sendable {
                 continue
             }
             
+            // Check Level 2: Department / Subheading Header (e.g. "### Dept", "1.1 Dept")
+            if isDepartmentHeader(line) {
+                if var item = currentItem {
+                    currentDepartment?.items.append(item)
+                    currentItem = nil
+                }
+                if let dept = currentDepartment {
+                    currentCategory?.departments.append(dept)
+                }
+                let cleanDept = stripLeadingNumbering(clean)
+                currentDepartment = ParsedDepartment(name: cleanDept)
+                currentItem = ParsedItem(name: cleanDept)
+                continue
+            }
+            
             // Check Level 1: Category Header (e.g. "## Category", "1. Category", or all-caps short line)
             if isCategoryHeader(line) {
                 if var item = currentItem {
@@ -102,21 +117,6 @@ public struct SemanticHierarchyParser: Sendable {
                     doc.categories.append(cat)
                 }
                 currentCategory = ParsedCategory(name: stripLeadingNumbering(clean))
-                continue
-            }
-            
-            // Check Level 2: Department / Subheading Header (e.g. "### Dept", "1.1 Dept")
-            if isDepartmentHeader(line) {
-                if var item = currentItem {
-                    currentDepartment?.items.append(item)
-                    currentItem = nil
-                }
-                if let dept = currentDepartment {
-                    currentCategory?.departments.append(dept)
-                }
-                let cleanDept = stripLeadingNumbering(clean)
-                currentDepartment = ParsedDepartment(name: cleanDept)
-                currentItem = ParsedItem(name: cleanDept)
                 continue
             }
             
@@ -164,14 +164,22 @@ public struct SemanticHierarchyParser: Sendable {
     // MARK: - Classification Heuristics
     
     private static func isCategoryHeader(_ line: String) -> Bool {
+        if line.hasPrefix("###") || line.hasPrefix("####") { return false }
         if line.hasPrefix("# ") || line.hasPrefix("## ") { return true }
+        
+        let tokens = line.components(separatedBy: .whitespaces)
+        if let firstToken = tokens.first, firstToken.contains(".") {
+            let parts = firstToken.split(separator: ".")
+            if parts.count >= 2 && parts.allSatisfy({ Int($0) != nil }) {
+                return false
+            }
+        }
         
         // Match "1. Title" or "1) Title" but NOT "1.1 Title"
         if let first = line.first, first.isNumber && line.count < 45 && !containsPrice(line) {
-            let tokens = line.components(separatedBy: .whitespaces)
             if let firstToken = tokens.first {
                 let cleanToken = firstToken.trimmingCharacters(in: CharacterSet(charactersIn: ".)"))
-                if Int(cleanToken) != nil, !firstToken.contains(".") || firstToken.filter({ $0 == "." }).count == 1 && !firstToken.dropLast().contains(".") {
+                if Int(cleanToken) != nil, !firstToken.contains(".") || (firstToken.filter({ $0 == "." }).count == 1 && !firstToken.dropLast().contains(".")) {
                     if !firstToken.contains(".") || firstToken.hasSuffix(".") {
                         return true
                     }

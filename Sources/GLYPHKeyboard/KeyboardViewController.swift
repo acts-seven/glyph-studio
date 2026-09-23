@@ -4,12 +4,29 @@ import GLYPHCore
 public class KeyboardViewController: UIInputViewController {
     
     private var activeStyle: TypographyStyle = .frakturBold
+    private var activeTheme: ArchitecturalTheme = .obeliskGothic
+    private var presetIndex: Int = 0
     private var isShifted: Bool = false
     private var letterButtons: [UIButton] = []
+    
+    // Tactile Feedback Engines
+    private let feedbackLight = UIImpactFeedbackGenerator(style: .light)
+    private let feedbackMedium = UIImpactFeedbackGenerator(style: .medium)
+    private let feedbackNotification = UINotificationFeedbackGenerator()
+    
+    private let presetBtn = UIButton(type: .system)
+    private let themeBtn = UIButton(type: .system)
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        feedbackLight.prepare()
+        feedbackMedium.prepare()
+        feedbackNotification.prepare()
     }
     
     private func setupUI() {
@@ -22,7 +39,7 @@ public class KeyboardViewController: UIInputViewController {
         rootStack.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(rootStack)
         
-        // MARK: - Row 1: Action Bar (Architect + Presets + Styles)
+        // MARK: - Row 1: Action Bar (Architect + Themes + Presets + Styles)
         let topScroll = UIScrollView()
         topScroll.showsHorizontalScrollIndicator = false
         topScroll.translatesAutoresizingMaskIntoConstraints = false
@@ -42,26 +59,36 @@ public class KeyboardViewController: UIInputViewController {
         architectBtn.layer.cornerRadius = 6
         architectBtn.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
         architectBtn.addAction(UIAction { [weak self] _ in
+            self?.feedbackNotification.notificationOccurred(.success)
             self?.autoArchitectClipboard()
         }, for: .touchUpInside)
         topBar.addArrangedSubview(architectBtn)
         
-        // 2. Preset Dropdown/Button
-        let presetBtn = UIButton(type: .system)
-        presetBtn.setTitle("📋 Presets", for: .normal)
+        // 2. 🏛️ Architectural Theme Cycle Button
+        updateThemeButtonLabel()
+        themeBtn.setTitleColor(.white, for: .normal)
+        themeBtn.titleLabel?.font = .systemFont(ofSize: 12, weight: .semibold)
+        themeBtn.backgroundColor = UIColor(red: 0.35, green: 0.25, blue: 0.65, alpha: 1.0)
+        themeBtn.layer.cornerRadius = 6
+        themeBtn.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
+        themeBtn.addAction(UIAction { [weak self] _ in
+            self?.cycleTheme()
+        }, for: .touchUpInside)
+        topBar.addArrangedSubview(themeBtn)
+        
+        // 3. Preset Cycle Button
+        updatePresetButtonLabel()
         presetBtn.setTitleColor(.white, for: .normal)
         presetBtn.titleLabel?.font = .systemFont(ofSize: 12, weight: .semibold)
         presetBtn.backgroundColor = UIColor(red: 0.2, green: 0.4, blue: 0.7, alpha: 1.0)
         presetBtn.layer.cornerRadius = 6
-        presetBtn.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+        presetBtn.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
         presetBtn.addAction(UIAction { [weak self] _ in
-            if let firstPreset = PresetsLibrary.allPresets.first {
-                self?.textDocumentProxy.insertText(firstPreset.rawContent)
-            }
+            self?.insertAndCyclePreset()
         }, for: .touchUpInside)
         topBar.addArrangedSubview(presetBtn)
         
-        // 3. Style Buttons
+        // 4. Style Buttons
         let styles: [(String, TypographyStyle)] = [
             ("𝕲𝖔𝖙𝖍𝖎𝖈", .frakturBold),
             ("𝓒𝓾𝓻𝓼𝓲𝓿𝓮", .cursiveBold),
@@ -75,10 +102,11 @@ public class KeyboardViewController: UIInputViewController {
             btn.setTitle(label, for: .normal)
             btn.setTitleColor(.white, for: .normal)
             btn.titleLabel?.font = .systemFont(ofSize: 12, weight: .medium)
-            btn.backgroundColor = UIColor(white: 0.18, alpha: 1.0)
+            btn.backgroundColor = (self.activeStyle == style) ? UIColor(white: 0.35, alpha: 1.0) : UIColor(white: 0.18, alpha: 1.0)
             btn.layer.cornerRadius = 6
             btn.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
             btn.addAction(UIAction { [weak self] _ in
+                self?.feedbackLight.impactOccurred()
                 self?.activeStyle = style
                 self?.updateKeyLabels()
             }, for: .touchUpInside)
@@ -111,6 +139,7 @@ public class KeyboardViewController: UIInputViewController {
             btn.layer.cornerRadius = 5
             btn.contentEdgeInsets = UIEdgeInsets(top: 4, left: 6, bottom: 4, right: 6)
             btn.addAction(UIAction { [weak self] _ in
+                self?.feedbackLight.impactOccurred()
                 self?.textDocumentProxy.insertText(glyph + " ")
             }, for: .touchUpInside)
             symbolsRow.addArrangedSubview(btn)
@@ -138,6 +167,7 @@ public class KeyboardViewController: UIInputViewController {
         shiftBtn.layer.cornerRadius = 5
         shiftBtn.widthAnchor.constraint(equalToConstant: 40).isActive = true
         shiftBtn.addAction(UIAction { [weak self] _ in
+            self?.feedbackLight.impactOccurred()
             self?.isShifted.toggle()
             self?.updateKeyLabels()
         }, for: .touchUpInside)
@@ -156,6 +186,7 @@ public class KeyboardViewController: UIInputViewController {
         deleteBtn.layer.cornerRadius = 5
         deleteBtn.widthAnchor.constraint(equalToConstant: 40).isActive = true
         deleteBtn.addAction(UIAction { [weak self] _ in
+            self?.feedbackMedium.impactOccurred()
             self?.textDocumentProxy.deleteBackward()
         }, for: .touchUpInside)
         row3Stack.addArrangedSubview(deleteBtn)
@@ -182,6 +213,7 @@ public class KeyboardViewController: UIInputViewController {
         spaceBtn.backgroundColor = UIColor(white: 0.28, alpha: 1.0)
         spaceBtn.layer.cornerRadius = 5
         spaceBtn.addAction(UIAction { [weak self] _ in
+            self?.feedbackLight.impactOccurred()
             self?.textDocumentProxy.insertText(" ")
         }, for: .touchUpInside)
         bottomStack.addArrangedSubview(spaceBtn)
@@ -193,6 +225,7 @@ public class KeyboardViewController: UIInputViewController {
         returnBtn.layer.cornerRadius = 5
         returnBtn.widthAnchor.constraint(equalToConstant: 70).isActive = true
         returnBtn.addAction(UIAction { [weak self] _ in
+            self?.feedbackLight.impactOccurred()
             self?.textDocumentProxy.insertText("\n")
         }, for: .touchUpInside)
         bottomStack.addArrangedSubview(returnBtn)
@@ -249,6 +282,7 @@ public class KeyboardViewController: UIInputViewController {
         
         btn.addAction(UIAction { [weak self] _ in
             guard let self = self else { return }
+            self.feedbackLight.impactOccurred()
             let charToInsert = self.isShifted ? key.uppercased() : key.lowercased()
             let transcoded = UnicodeFontConverter.shared.convert(charToInsert, to: self.activeStyle)
             self.textDocumentProxy.insertText(transcoded)
@@ -266,12 +300,49 @@ public class KeyboardViewController: UIInputViewController {
         }
     }
     
+    private func cycleTheme() {
+        feedbackLight.impactOccurred()
+        let allThemes = ArchitecturalTheme.allCases
+        if let idx = allThemes.firstIndex(of: activeTheme) {
+            activeTheme = allThemes[(idx + 1) % allThemes.count]
+        } else {
+            activeTheme = .obeliskGothic
+        }
+        updateThemeButtonLabel()
+    }
+    
+    private func updateThemeButtonLabel() {
+        let name = activeTheme.rawValue.components(separatedBy: " ").first ?? "Apex"
+        themeBtn.setTitle("🏛️ \(name)", for: .normal)
+    }
+    
+    private func insertAndCyclePreset() {
+        feedbackLight.impactOccurred()
+        let presets = PresetsLibrary.allPresets
+        guard !presets.isEmpty else { return }
+        let currentPreset = presets[presetIndex % presets.count]
+        textDocumentProxy.insertText(currentPreset.rawContent)
+        presetIndex = (presetIndex + 1) % presets.count
+        updatePresetButtonLabel()
+    }
+    
+    private func updatePresetButtonLabel() {
+        let presets = PresetsLibrary.allPresets
+        guard !presets.isEmpty else {
+            presetBtn.setTitle("📋 Presets", for: .normal)
+            return
+        }
+        let nextPreset = presets[presetIndex % presets.count]
+        let shortTitle = String(nextPreset.title.prefix(8))
+        presetBtn.setTitle("📋 \(shortTitle)…", for: .normal)
+    }
+    
     private func autoArchitectClipboard() {
         guard let clipboard = UIPasteboard.general.string, !clipboard.isEmpty else { return }
         let parsed = SemanticHierarchyParser.parse(rawText: clipboard)
         let formatted = HierarchicalThemeFormatter.format(
             document: parsed,
-            theme: .obeliskGothic,
+            theme: activeTheme,
             fontStyle: activeStyle
         )
         textDocumentProxy.insertText(formatted)

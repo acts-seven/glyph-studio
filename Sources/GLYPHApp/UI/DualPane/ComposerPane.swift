@@ -12,7 +12,7 @@ public struct ComposerPane: View {
                 Button(action: { state.pasteAndArchitect() }) {
                     HStack(spacing: 5) {
                         Image(systemName: "doc.on.clipboard.fill")
-                        Text("📋 Paste & Architect")
+                        Text("📋 Paste & Architect (⌘⇧V)")
                     }
                     .font(.system(size: 11, weight: .bold))
                     .foregroundColor(.white)
@@ -22,12 +22,13 @@ public struct ComposerPane: View {
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
                 .buttonStyle(.plain)
+                .keyboardShortcut("v", modifiers: [.command, .shift])
                 
                 // 2. Auto-Architect Current Text
                 Button(action: { state.autoArchitect() }) {
                     HStack(spacing: 5) {
                         Image(systemName: "wand.and.stars")
-                        Text("✨ Auto-Architect")
+                        Text("✨ Auto-Architect (⌘↩)")
                     }
                     .font(.system(size: 11, weight: .bold))
                     .foregroundColor(.white)
@@ -44,6 +45,7 @@ public struct ComposerPane: View {
                     .shadow(color: Color.orange.opacity(0.3), radius: 3, x: 0, y: 1)
                 }
                 .buttonStyle(.plain)
+                .keyboardShortcut(.return, modifiers: [.command])
                 
                 // 3. Theme Selector
                 Picker("Theme", selection: $state.selectedTheme) {
@@ -90,7 +92,7 @@ public struct ComposerPane: View {
                 Button(action: { state.transcodeAllText(to: state.activeStyle) }) {
                     HStack(spacing: 4) {
                         Image(systemName: "character")
-                        Text("Transcode Font")
+                        Text("Transcode Font (⌘T)")
                     }
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(Color(hex: "#58A6FF"))
@@ -100,6 +102,7 @@ public struct ComposerPane: View {
                     .clipShape(RoundedRectangle(cornerRadius: 6))
                 }
                 .buttonStyle(.plain)
+                .keyboardShortcut("t", modifiers: [.command])
                 
                 // Ready-to-Copy Presets Menu
                 Menu {
@@ -174,6 +177,75 @@ public struct ComposerPane: View {
                     .foregroundColor(Color(hex: "#E6EDF3"))
                     .scrollContentBackground(.hidden)
                     .padding(10)
+                
+                if state.currentText.isEmpty {
+                    VStack(spacing: 12) {
+                        Spacer()
+                        
+                        Image(systemName: "wand.and.stars")
+                            .font(.system(size: 32, weight: .light))
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [Color(hex: "#8A2387"), Color(hex: "#E94057"), Color(hex: "#F27121")],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                        
+                        Text("The Monospace Conduit")
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundColor(.white)
+                        
+                        Text("Type raw text, paste unstructured goods, or tap a preset to architect for Signal mobile viewports.")
+                            .font(.system(size: 11))
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 40)
+                        
+                        HStack(spacing: 10) {
+                            Button(action: { state.pasteAndArchitect() }) {
+                                HStack(spacing: 5) {
+                                    Image(systemName: "doc.on.clipboard.fill")
+                                    Text("Paste & Architect (⌘⇧V)")
+                                }
+                                .font(.system(size: 11, weight: .bold))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 7)
+                                .background(Color(hex: "#0A84FF"))
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            .buttonStyle(.plain)
+                            
+                            Button(action: {
+                                if let sample = PresetsLibrary.allPresets.first {
+                                    state.applyPreset(sample)
+                                }
+                            }) {
+                                HStack(spacing: 5) {
+                                    Image(systemName: "tray.and.arrow.down.fill")
+                                    Text("Load Sample Catalog")
+                                }
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundColor(Color(hex: "#E5C07B"))
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 7)
+                                .background(Color(hex: "#E5C07B").opacity(0.12))
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            .buttonStyle(.plain)
+                        }
+                        .padding(.top, 4)
+                        
+                        Text("⌘↩ Architect  •  ⌘⇧V Paste  •  ⌘⇧C Copy  •  ⌘T Transcode")
+                            .font(.system(size: 10, design: .monospaced))
+                            .foregroundColor(.white.opacity(0.3))
+                            .padding(.top, 8)
+                        
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
             }
             .padding(10)
             

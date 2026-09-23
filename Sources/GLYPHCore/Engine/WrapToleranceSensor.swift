@@ -18,10 +18,10 @@ public struct TextWidthMetrics {
     public static func visualColumnWidth(of string: String) -> Int {
         var width = 0
         for char in string {
-            if char.unicodeScalars.contains(where: { $0.properties.isEmojiPresentation }) {
-                width += 2
-            } else if char.unicodeScalars.contains(where: { $0.value == 0xFE0E }) {
+            if char.unicodeScalars.contains(where: { $0.value == 0xFE0E }) {
                 width += 1
+            } else if char.unicodeScalars.contains(where: { $0.value == 0xFE0F || $0.properties.isEmojiPresentation }) {
+                width += 2
             } else if let scalar = char.unicodeScalars.first, isEastAsianWide(scalar) {
                 width += 2
             } else if char.unicodeScalars.allSatisfy({ $0.properties.generalCategory == .nonspacingMark || $0.value == 0x200D }) {

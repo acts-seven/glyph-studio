@@ -4,5 +4,6 @@ DerivedData/
 project.xcworkspace/
 xcuserdata/
 build/
+release/
 *.o
 *.swiftdeps

@@ -21,6 +21,9 @@ package: build
 	@mkdir -p $(RELEASE_DIR)
 	@rm -rf "$(RELEASE_DIR)/GLYPH Studio.app"
 	cp -R "$(DERIVED_DATA)/Build/Products/Release/GLYPHApp.app" "$(RELEASE_DIR)/GLYPH Studio.app"
+	@mkdir -p "$(RELEASE_DIR)/GLYPH Studio.app/Contents/Resources"
+	cp assets/AppIcon.icns "$(RELEASE_DIR)/GLYPH Studio.app/Contents/Resources/AppIcon.icns"
+	plutil -replace CFBundleIconFile -string "AppIcon" "$(RELEASE_DIR)/GLYPH Studio.app/Contents/Info.plist"
 	codesign --force --sign - --timestamp=none "$(RELEASE_DIR)/GLYPH Studio.app"
 	cd $(RELEASE_DIR) && rm -f GLYPH-Studio-v1.0.0-macOS.zip checksums.txt
 	cd $(RELEASE_DIR) && zip -r -y GLYPH-Studio-v1.0.0-macOS.zip "GLYPH Studio.app"

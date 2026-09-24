@@ -32,8 +32,12 @@ install: package
 	cp -R "$(RELEASE_DIR)/GLYPH Studio.app" "/Applications/GLYPH Studio.app"
 	@echo "Successfully installed GLYPH Studio.app into /Applications/"
 
-deploy: install
-	@echo "Local deployment to /Applications/ complete."
+pkg:
+	chmod +x script/build_pkg.sh
+	./script/build_pkg.sh
+
+deploy: install pkg
+	@echo "Deployment complete."
 
 clean:
 	rm -rf $(RELEASE_DIR) $(DERIVED_DATA)

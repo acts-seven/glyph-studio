@@ -121,4 +121,79 @@ struct GLYPHCoreTests {
         #expect(doc.categories.first?.name == "BUTCHERY CUTS")
         #expect(doc.operationalNotes.contains("STATUS: IN STOCK"))
     }
+    
+    // MARK: - 5. Smart Word-Boundary Text Wrapping
+    
+    @Test("wrapText splits long strings across word boundaries without truncation")
+    func testWrapTextWordBoundarySplitting() {
+        let text = "BREAD (FRESH LOCAL BAKERY)"
+        let wrapped = HierarchicalThemeFormatter.wrapText(text, maxVisualWidth: 20)
+        #expect(wrapped.count == 2)
+        #expect(wrapped[0] == "BREAD (FRESH LOCAL")
+        #expect(wrapped[1] == "BAKERY)")
+        for line in wrapped {
+            #expect(TextWidthMetrics.visualColumnWidth(of: line) <= 20)
+        }
+    }
+    
+    // MARK: - 6. User Screenshot Grocery List: Zero-Data-Loss Invariant
+    
+    @Test("User grocery list is fully included with zero truncation across all themes")
+    func testZeroDataLossAndWrappingOnUserGroceryList() {
+        let groceryList = """
+        Normal Grocery List
+        General
+        Items
+        Store: Local Supermarket
+        Payment/Pickup: Card / Cash
+        Bread (Fresh Local Bakery)
+        Dish Sponges / Scourers
+        Eggs (1 Dozen, Large)
+        Full-Cream Milk (2 Litre)
+        Light Milk (1-Litre Bottle)
+        Instant Coffee / Tea Bags
+        Butter (Salted, 250g)
+        Pending / Next Trip
+        Paper Towels (Check Stock)
+        Fruit Juice (6-Pack)
+        """
+        
+        let doc = SemanticHierarchyParser.parse(rawText: groceryList)
+        let allThemes: [ArchitecturalTheme] = [
+            .obeliskGothic, .cyberMatrix, .alchemicalSanctum,
+            .engulfingVortex, .celestialVoid, .royalBaroque, .nordicRune
+        ]
+        
+        // Critical keywords that must NEVER be truncated
+        let mustPreserveWords = [
+            "SUPERMARKET", "BAKERY", "SCOURERS", "LARGE",
+            "LITRE", "BOTTLE", "BAGS", "250G", "TRIP", "STOCK"
+        ]
+        
+        for theme in allThemes {
+            let rendered = HierarchicalThemeFormatter.format(document: doc, theme: theme, fontStyle: .smallCaps)
+            
+            // 1. Invariant: ZERO lines may exceed 24 columns
+            let reports = WrapToleranceSensor.inspect(text: rendered)
+            for report in reports {
+                #expect(
+                    report.visualColumns <= 24,
+                    "Theme \(theme.rawValue) exceeded 24 cols: '\(report.content)' (width \(report.visualColumns))"
+                )
+            }
+            
+            // 2. Invariant: ZERO ellipsis truncation artifacts
+            #expect(!rendered.contains("…"), "Theme \(theme.rawValue) contained truncation ellipsis '…'")
+            #expect(!rendered.contains("..."), "Theme \(theme.rawValue) contained truncation dots '...'")
+            
+            // 3. Invariant: All content must be included
+            let uppercaseRendered = rendered.uppercased()
+            for word in mustPreserveWords {
+                #expect(
+                    uppercaseRendered.contains(word),
+                    "Theme \(theme.rawValue) lost keyword '\(word)' due to truncation"
+                )
+            }
+        }
+    }
 }

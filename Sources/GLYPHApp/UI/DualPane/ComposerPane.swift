@@ -55,21 +55,49 @@ public struct ComposerPane: View {
                 }
                 .frame(width: 140)
                 
+                // 4. Wrap Lines Button (On-Demand Safe Word Wrap)
+                Button(action: { state.wrapCurrentTextToSafeWidth() }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "arrow.turn.down.left")
+                        Text("Wrap Lines (≤24)")
+                    }
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(Color(hex: "#7EE787"))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 5)
+                    .background(Color(hex: "#238636").opacity(0.2))
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(Color(hex: "#238636").opacity(0.4), lineWidth: 1)
+                    )
+                }
+                .buttonStyle(.plain)
+                .help("Intelligently wrap any lines exceeding 24 columns across word boundaries with tree indentation")
+                
                 Spacer()
                 
-                // 4. Wrap Safety Status Badge
-                HStack(spacing: 4) {
-                    Circle()
-                        .fill(state.dangerCount == 0 ? Color.green : Color.red)
-                        .frame(width: 8, height: 8)
-                    Text(state.dangerCount == 0 ? "Wrap Safe (≤24 col)" : "\(state.dangerCount) Hazards")
-                        .font(.caption2.bold())
-                        .foregroundColor(state.dangerCount == 0 ? .green : .red)
+                // 5. Wrap Safety Status Badge (Click to auto-wrap hazards)
+                Button(action: {
+                    if state.dangerCount > 0 {
+                        state.wrapCurrentTextToSafeWidth()
+                    }
+                }) {
+                    HStack(spacing: 4) {
+                        Circle()
+                            .fill(state.dangerCount == 0 ? Color.green : Color.red)
+                            .frame(width: 8, height: 8)
+                        Text(state.dangerCount == 0 ? "Wrap Safe (≤24 col)" : "\(state.dangerCount) Hazards (Click to Fix)")
+                            .font(.caption2.bold())
+                            .foregroundColor(state.dangerCount == 0 ? .green : .red)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.black.opacity(0.3))
+                    .clipShape(Capsule())
                 }
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(Color.black.opacity(0.3))
-                .clipShape(Capsule())
+                .buttonStyle(.plain)
+                .help(state.dangerCount == 0 ? "All lines strictly fit Signal's 24-column bubble width" : "Click to automatically wrap all hazard lines")
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 8)

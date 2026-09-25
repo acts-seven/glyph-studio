@@ -50,3 +50,17 @@ This document records architectural principles, theoretical root causes, platfor
   2. Integrated low-latency `UIImpactFeedbackGenerator(style: .light)` and `UINotificationFeedbackGenerator()` across key taps, shifts, deletes, presets, and architect actions.
   3. Added dynamic theme cycling (`🏛️ [Theme]`) and preset rotation directly in the iOS custom keyboard top action bar.
   4. Added dual-mode preview toggle (Proportional Signal Default vs Monospace Sandbox) in the macOS conversation bar.
+
+---
+
+## 5. Zero-Data-Loss Word-Boundary Wrapping vs. Destructive Truncation
+* **Discovery Date**: 2026-09-25
+* **Context**: `HierarchicalThemeFormatter.swift`, `AppState.swift`, `ComposerPane.swift`
+* **Defect**: When users input detailed item descriptions or grocery lists (e.g. `STORE: LOCAL SUPERMARKET`, `BREAD (FRESH LOCAL BAKERY)`, `DISH SPONGES / SCOURERS`), the theme formatters hard-truncated lines with ellipses (`…`), irreversibly destroying user content to fit within a single line limit.
+* **Root Cause**: `fitText` returned `result + "…"` as soon as `visualColumnWidth > maxVisualWidth - 1`. Themes lacked multi-line word-wrapping mechanisms and vertical box expansion logic.
+* **Architectural Solution**:
+  1. Implemented `wrapText(_:maxVisualWidth:)`: parses strings by whole words (with character fallback for oversized atomic tokens) ensuring every line is $\le \text{maxVisualWidth}$.
+  2. Implemented `appendWrappedItem(...)`: prefixes line 0 with the thematic bullet (e.g. `◈ `, `⌬ `, `✦ `, `❖ `) and prefixes subsequent lines with aligned continuation indents and vertical tree conduits (`  ┃ ` or `  │ `), preserving hierarchical tree connectivity.
+  3. Implemented `appendWrappedBox(...)`: dynamically expands decorative top/bottom borders vertically, centering multi-line wrapped titles and department headers without breaking box boundaries.
+  4. Added `wrapCurrentTextToSafeWidth(maxColumns: 24)` to `AppState` with an on-demand toolbar button (`↩ Wrap Lines (≤24)`) and clickable hazard badge in `ComposerPane`.
+* **Automated Regression Guard**: `GLYPHCoreTests.testZeroDataLossAndWrappingOnUserGroceryList` verifies that raw user grocery list items retain 100% of their keywords, produce zero `…`/`...` artifacts, and strictly satisfy $\le 24$ visual columns across all 8 architectural themes.

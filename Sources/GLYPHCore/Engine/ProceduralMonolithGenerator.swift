@@ -69,17 +69,28 @@ public struct ProceduralMonolithGenerator: Sendable {
         card.append(headerCrown.trimmingCharacters(in: .newlines))
         card.append(topSwirl.trimmingCharacters(in: .newlines))
         
-        // Symmetrical Title Monolith Box (Guaranteed 22 columns)
-        let fittedTitle = HierarchicalThemeFormatter.fitText(styledTitle, maxVisualWidth: 18)
-        card.append("╭━━━━━━━━━━━━━━━━━━━━╮")
-        card.append("┃ \(centerText(fittedTitle, width: 18)) ┃")
-        card.append("╰━━━━━━━━━━━━━━━━━━━━╯")
+        // Symmetrical Title Monolith Box (Guaranteed 22 columns with multi-line wrapping)
+        HierarchicalThemeFormatter.appendWrappedBox(
+            lines: &card,
+            text: styledTitle,
+            topBorder: "╭━━━━━━━━━━━━━━━━━━━━╮",
+            bottomBorder: "╰━━━━━━━━━━━━━━━━━━━━╯",
+            leftGutter: "┃ ",
+            rightGutter: " ┃",
+            contentWidth: 18,
+            centerLines: true
+        )
         
         if !bodyLines.isEmpty {
             card.append(divider)
             for line in bodyLines {
-                let fittedLine = HierarchicalThemeFormatter.fitText(line.uppercased(), maxVisualWidth: 19)
-                card.append("◈ \(fittedLine)")
+                HierarchicalThemeFormatter.appendWrappedItem(
+                    lines: &card,
+                    text: line.uppercased(),
+                    bullet: "◈ ",
+                    continuationIndent: "  ",
+                    maxVisualWidth: 22
+                )
             }
         }
         

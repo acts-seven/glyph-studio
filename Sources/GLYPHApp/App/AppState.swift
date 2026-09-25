@@ -95,6 +95,55 @@ public final class AppState {
         showNotificationBanner(message: "✨ Formatted with \(themeToUse.rawValue)")
     }
     
+    /// Intelligently wraps any text lines in the editor exceeding maxColumns across whole words with matching structural indentation.
+    public func wrapCurrentTextToSafeWidth(maxColumns: Int = 24) {
+        let lines = currentText.components(separatedBy: .newlines)
+        var newLines: [String] = []
+        for line in lines {
+            let colWidth = TextWidthMetrics.visualColumnWidth(of: line)
+            if colWidth <= maxColumns {
+                newLines.append(line)
+            } else {
+                let leadingSpaces = line.prefix(while: { $0 == " " || $0 == "\t" })
+                let indent = String(leadingSpaces)
+                let trimmed = line.trimmingCharacters(in: .whitespaces)
+                
+                var bullet = ""
+                var continuationIndent = indent + "  "
+                let candidateBullets = ["◈ ", "⌬ ", "✦ ", "❖ ", "✧ ", "᚛ ", "• ", "- ", "* "]
+                for b in candidateBullets {
+                    if trimmed.hasPrefix(b) {
+                        bullet = b
+                        continuationIndent = indent + String(repeating: " ", count: TextWidthMetrics.visualColumnWidth(of: b))
+                        break
+                    }
+                }
+                let branchBullets = ["├─ ", "┠ ", "╟── ", "├ ", "│ ", "┃ "]
+                for br in branchBullets {
+                    if trimmed.hasPrefix(br) {
+                        bullet = br
+                        continuationIndent = indent + "│ "
+                        break
+                    }
+                }
+                
+                let contentWithoutBullet = bullet.isEmpty ? trimmed : String(trimmed.dropFirst(bullet.count))
+                let availableWidth = max(maxColumns - TextWidthMetrics.visualColumnWidth(of: indent + bullet), 8)
+                let wrapped = HierarchicalThemeFormatter.wrapText(contentWithoutBullet, maxVisualWidth: availableWidth)
+                
+                for (idx, wLine) in wrapped.enumerated() {
+                    if idx == 0 {
+                        newLines.append(indent + bullet + wLine)
+                    } else {
+                        newLines.append(continuationIndent + wLine)
+                    }
+                }
+            }
+        }
+        currentText = newLines.joined(separator: "\n")
+        showNotificationBanner(message: "↩ Wrapped to ≤\(maxColumns) Columns")
+    }
+    
     public func applyProceduralRoll(vibe: ProceduralVibe) {
         currentText = ProceduralMonolithGenerator.generate(
             title: "FLASH ACCESS",

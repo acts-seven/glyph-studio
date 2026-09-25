@@ -7,3 +7,5 @@ build/
 release/
 *.o
 *.swiftdeps
+.build/
+.swiftpm/

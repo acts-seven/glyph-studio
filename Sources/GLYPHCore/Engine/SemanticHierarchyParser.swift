@@ -80,7 +80,7 @@ public struct SemanticHierarchyParser: Sendable {
             
             // Check Level 0: Operational / CTA line (e.g. "DM @admin", "PAYMENT: CASH")
             if isOperationalOrCTA(clean) {
-                if var item = currentItem {
+                if let item = currentItem {
                     currentDepartment?.items.append(item)
                     currentItem = nil
                 }
@@ -90,7 +90,7 @@ public struct SemanticHierarchyParser: Sendable {
             
             // Check Level 2: Department / Subheading Header (e.g. "### Dept", "1.1 Dept")
             if isDepartmentHeader(line) {
-                if var item = currentItem {
+                if let item = currentItem {
                     currentDepartment?.items.append(item)
                     currentItem = nil
                 }
@@ -105,7 +105,7 @@ public struct SemanticHierarchyParser: Sendable {
             
             // Check Level 1: Category Header (e.g. "## Category", "1. Category", or all-caps short line)
             if isCategoryHeader(line) {
-                if var item = currentItem {
+                if let item = currentItem {
                     currentDepartment?.items.append(item)
                     currentItem = nil
                 }
@@ -132,7 +132,7 @@ public struct SemanticHierarchyParser: Sendable {
             }
             
             // Otherwise Level 3: Item Name
-            if var item = currentItem {
+            if let item = currentItem {
                 if currentDepartment == nil {
                     currentDepartment = ParsedDepartment(name: "ITEMS")
                 }

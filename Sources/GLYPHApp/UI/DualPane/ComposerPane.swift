@@ -132,17 +132,46 @@ public struct ComposerPane: View {
                 .buttonStyle(.plain)
                 .keyboardShortcut("t", modifiers: [.command])
                 
-                // Ready-to-Copy Presets Menu
+                // Preset Vault Sheet Button
+                Button(action: { state.showPresetGallery = true }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "sparkles.rectangle.stack.fill")
+                        Text("Preset Vault (\(PresetsLibrary.allPresets.count))")
+                    }
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundColor(Color(hex: "#FFA657"))
+                    .padding(.horizontal, 9)
+                    .padding(.vertical, 5)
+                    .background(Color(hex: "#FFA657").opacity(0.16))
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(Color(hex: "#FFA657").opacity(0.3), lineWidth: 1)
+                    )
+                }
+                .buttonStyle(.plain)
+                .keyboardShortcut("p", modifiers: [.command])
+                .help("Browse, configure, and preview all 40 mobile-safe Signal presets (⌘P)")
+                
+                // Categorized Quick Pick Menu
                 Menu {
-                    ForEach(PresetsLibrary.allPresets) { preset in
-                        Button("\(preset.category): \(preset.title)") {
-                            state.applyPreset(preset)
+                    Button("Open Full Preset Vault (⌘P)...") {
+                        state.showPresetGallery = true
+                    }
+                    Divider()
+                    ForEach(PresetsLibrary.categories, id: \.self) { cat in
+                        Menu(cat) {
+                            ForEach(PresetsLibrary.allPresets.filter { $0.category == cat }) { preset in
+                                Button(preset.title) {
+                                    state.applyPreset(preset)
+                                }
+                            }
                         }
                     }
                 } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "text.badge.star")
-                        Text("Presets (\(PresetsLibrary.allPresets.count))")
+                        Text("Quick Pick")
                     }
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(Color(hex: "#E5C07B"))
@@ -303,5 +332,8 @@ public struct ComposerPane: View {
             .background(Color(hex: "#161B22"))
         }
         .background(Color(hex: "#0F141C"))
+        .sheet(isPresented: $state.showPresetGallery) {
+            PresetGallerySheet(state: state)
+        }
     }
 }

@@ -64,3 +64,18 @@ This document records architectural principles, theoretical root causes, platfor
   3. Implemented `appendWrappedBox(...)`: dynamically expands decorative top/bottom borders vertically, centering multi-line wrapped titles and department headers without breaking box boundaries.
   4. Added `wrapCurrentTextToSafeWidth(maxColumns: 24)` to `AppState` with an on-demand toolbar button (`↩ Wrap Lines (≤24)`) and clickable hazard badge in `ComposerPane`.
 * **Automated Regression Guard**: `GLYPHCoreTests.testZeroDataLossAndWrappingOnUserGroceryList` verifies that raw user grocery list items retain 100% of their keywords, produce zero `…`/`...` artifacts, and strictly satisfy $\le 24$ visual columns across all 8 architectural themes.
+
+---
+
+## 6. Shell-Style Template Parameter Fallbacks & Dual-Mode Plugin Architecture
+* **Discovery Date**: 2026-09-25
+* **Context**: `PresetTemplateEngine.swift`, `GLYPHPluginEngine.swift`, `SignalPostPreset.swift`
+* **Defect**: Initial variable discovery used `\{\{\s*([A-Za-z0-9_]+)\s*\}\}` which failed on POSIX shell parameter expansion syntax `{{VAR:-DEFAULT}}`, leaving raw template tags unrendered and ignoring default values.
+* **Root Cause**: The regex pattern did not match default colon-dash (`:-`) separators or whitespace variations inside placeholders.
+* **Architectural Solution**:
+  1. Upgraded regex engine to `\{\{\s*([A-Za-z0-9_]+)(?::-(.*?))?\s*\}\}`: captures variable names and default fallbacks in reverse order, ensuring string index validity during interpolation.
+  2. Implemented `PresetVariableInfo` model exposing variable key, default value, and requirement status.
+  3. Added `PresetGallerySheet.swift` with interactive parameter fields, search filter, and category pills updating the Signal phone bubble simulation in real time.
+  4. Created dual-mode `GlyphPluginService` supporting in-process Swift calls (`import GLYPHCore`) and out-of-process JSON-RPC 2.0 daemon IPC over standard IO via standalone `glyph` CLI binary.
+  5. Implemented `enforceColumnBudget` with preserved tree connectors (`┠`, `┃`, `├─`, `│`), preventing layout degradation during variable expansion.
+* **Automated Regression Guard**: `GLYPHCoreTests.testAll40PresetsObey24ColumnInvariant`, `testPresetTemplateEngineFuzzingWithLongVariables`, and `testGlyphPluginServiceJSONRPC` verify zero unresolved placeholders, zero line overflow (> 24 cols), and 100% round-trip fidelity across all 40 presets.

@@ -19,7 +19,6 @@ public struct ProceduralMonolithGenerator: Sendable {
         vibe: ProceduralVibe = .alchemical,
         fontStyle: TypographyStyle = .frakturBold
     ) -> String {
-        let maxCols = 22
         let styledTitle = UnicodeFontConverter.shared.convert(title.uppercased(), to: fontStyle)
         
         let headerCrown: String

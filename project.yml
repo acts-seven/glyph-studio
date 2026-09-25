@@ -33,6 +33,17 @@ targets:
       INFOPLIST_KEY_CFBundleDisplayName: "GLYPH Studio"
       GENERATE_INFOPLIST_FILE: YES
 
+  glyph:
+    type: tool
+    platform: macOS
+    sources:
+      - path: Sources/glyph-cli
+    dependencies:
+      - target: GLYPHCore
+    settings:
+      PRODUCT_NAME: glyph
+
+
   GLYPHCore_iOS:
     type: framework
     platform: iOS

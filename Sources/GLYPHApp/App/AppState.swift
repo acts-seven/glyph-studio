@@ -41,6 +41,7 @@ public final class AppState {
     public var simulatedWidth: CGFloat = 393 // iPhone 16 Pro default
     public var showCopiedBanner: Bool = false
     public var bannerMessage: String = "Copied to Clipboard"
+    public var showPresetGallery: Bool = false
     
     public var lineReports: [LineSafetyReport] {
         WrapToleranceSensor.inspect(text: currentText)
@@ -155,8 +156,13 @@ public final class AppState {
     }
     
     public func applyPreset(_ preset: SignalPostPreset) {
-        currentText = preset.rawContent.trimmingCharacters(in: .whitespacesAndNewlines)
+        currentText = preset.render().trimmingCharacters(in: .whitespacesAndNewlines)
         showNotificationBanner(message: "Loaded '\(preset.title)'")
+    }
+    
+    public func applyRenderedPreset(_ rendered: String, title: String) {
+        currentText = rendered.trimmingCharacters(in: .whitespacesAndNewlines)
+        showNotificationBanner(message: "Loaded '\(title)'")
     }
     
     public func transcodeAllText(to style: TypographyStyle) {

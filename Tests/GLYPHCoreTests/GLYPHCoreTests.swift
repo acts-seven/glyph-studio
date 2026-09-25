@@ -196,4 +196,135 @@ struct GLYPHCoreTests {
             }
         }
     }
+    
+    // MARK: - 7. Exhaustive Verification of All 40 Presets (<= 24 cols)
+    
+    @Test("All 40 Presets in catalog render cleanly within <= 24 columns")
+    func testAll40PresetsObey24ColumnInvariant() {
+        let all = PresetsLibrary.allPresets
+        #expect(all.count >= 40, "Expected at least 40 presets, found \(all.count)")
+        
+        for preset in all {
+            let rendered = preset.render()
+            let lines = rendered.components(separatedBy: .newlines)
+            
+            #expect(!lines.isEmpty, "Preset \(preset.id) rendered empty string")
+            
+            for (idx, line) in lines.enumerated() {
+                let colWidth = TextWidthMetrics.visualColumnWidth(of: line)
+                #expect(
+                    colWidth <= 24,
+                    "Preset '\(preset.id)' (\(preset.title)) line \(idx) exceeded 24 cols: '\(line)' (width: \(colWidth))"
+                )
+            }
+            
+            // Verify no unresolved variable placeholders when default values are present
+            let remainingPlaceholders = PresetTemplateEngine.extractVariables(from: rendered)
+            #expect(
+                remainingPlaceholders.isEmpty,
+                "Preset '\(preset.id)' has unresolved placeholders in rendered output: \(remainingPlaceholders)"
+            )
+        }
+    }
+    
+    // MARK: - 8. Variable Substitution & Word-Boundary Wrap Fuzzing
+    
+    @Test("PresetTemplateEngine safely wraps excessively long injected variables")
+    func testPresetTemplateEngineFuzzingWithLongVariables() {
+        let preset = PresetsLibrary.preset(for: "food_vault")!
+        let fuzzedVariables: [String: String] = [
+            "PRICE_OIL_DRUM": "$9,999,999,999.00 / METRIC TON HIGH-SEAS DRUM",
+            "PRICE_RICE": "$1,250.00 / 500-KG CONTAINER FREIGHT",
+            "PRICE_FLOUR": "$880.00 / WHOLESALE PALLET"
+        ]
+        
+        let rendered = preset.render(with: fuzzedVariables, maxColumns: 24)
+        let lines = rendered.components(separatedBy: .newlines)
+        
+        for (idx, line) in lines.enumerated() {
+            let colWidth = TextWidthMetrics.visualColumnWidth(of: line)
+            #expect(
+                colWidth <= 24,
+                "Fuzzed preset line \(idx) exceeded 24 cols: '\(line)' (width: \(colWidth))"
+            )
+        }
+        
+        // Assert all critical numbers from fuzzed variables are preserved without truncation
+        #expect(rendered.contains("9,999,999,999.00"))
+        #expect(rendered.contains("HIGH-SEAS"))
+        #expect(rendered.contains("1,250.00"))
+        #expect(rendered.contains("880.00"))
+    }
+    
+    // MARK: - 9. GLYPHPluginEngine In-Process & JSON-RPC Verification
+    
+    @Test("GlyphPluginService handles in-process requests with high fidelity")
+    func testGlyphPluginServiceInProcess() {
+        let service = GlyphPluginService.shared
+        
+        // 1. Ping
+        let pingReq = GlyphPluginRequest(action: .ping)
+        let pingRes = service.handle(request: pingReq)
+        #expect(pingRes.success == true)
+        #expect(pingRes.renderedText?.contains("PONG") == true)
+        
+        // 2. List Presets
+        let listReq = GlyphPluginRequest(action: .listPresets)
+        let listRes = service.handle(request: listReq)
+        #expect(listRes.success == true)
+        #expect((listRes.presets?.count ?? 0) >= 40)
+        
+        // 3. Render Preset
+        let renderReq = GlyphPluginRequest(
+            action: .renderPreset,
+            presetId: "speakeasy_cipher",
+            variables: ["DOOR_CODE": "#9999*", "CIPHER": "MIDNIGHT SUN"]
+        )
+        let renderRes = service.handle(request: renderReq)
+        #expect(renderRes.success == true)
+        #expect(renderRes.renderedText?.contains("#9999*") == true)
+        #expect(renderRes.renderedText?.contains("MIDNIGHT SUN") == true)
+        
+        // 4. Validate Layout
+        let safeText = "◈ LINE ONE\n◈ LINE TWO"
+        let valReq = GlyphPluginRequest(action: .validateLayout, rawText: safeText)
+        let valRes = service.handle(request: valReq)
+        #expect(valRes.success == true)
+        #expect(valRes.validation?.isSafe == true)
+        
+        let wideText = "◈ THIS IS AN EXTREMELY WIDE LINE THAT BLOWS PAST 24 COLUMNS DEFINITELY"
+        let valBadReq = GlyphPluginRequest(action: .validateLayout, rawText: wideText, targetColumns: 24)
+        let valBadRes = service.handle(request: valBadReq)
+        #expect(valBadRes.success == true)
+        #expect(valBadRes.validation?.isSafe == false)
+        #expect(valBadRes.validation?.offendingLineIndices.contains(0) == true)
+        #expect(valBadRes.validation?.safeWrappedText.contains("◈ THIS IS AN") == true)
+    }
+    
+    @Test("GlyphPluginService handles JSON-RPC 2.0 payloads correctly")
+    func testGlyphPluginServiceJSONRPC() {
+        let jsonRPCRequest = """
+        {
+            "jsonrpc": "2.0",
+            "id": "req-42",
+            "method": "render_preset",
+            "params": {
+                "action": "render_preset",
+                "presetId": "vip_access",
+                "variables": {
+                    "TIER": "EMERALD CITADEL",
+                    "STATUS": "AUTHORIZED"
+                }
+            }
+        }
+        """
+        
+        let responseString = GlyphPluginService.shared.handleJSON(jsonRPCRequest)
+        #expect(!responseString.isEmpty)
+        #expect(responseString.contains("\"jsonrpc\":\"2.0\""))
+        #expect(responseString.contains("req-42"))
+        #expect(responseString.contains("EMERALD CITADEL"))
+        #expect(responseString.contains("AUTHORIZED"))
+    }
 }
+

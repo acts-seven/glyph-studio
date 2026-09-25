@@ -17,7 +17,12 @@ build:
 build-ios:
 	$(XCODEBUILD) build -scheme GLYPHKeyboard -configuration Release -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO -derivedDataPath $(DERIVED_DATA)
 
-package: build
+build-cli:
+	swift build -c release --product glyph
+	@mkdir -p $(RELEASE_DIR)
+	cp .build/release/glyph "$(RELEASE_DIR)/glyph"
+
+package: build build-cli
 	@mkdir -p $(RELEASE_DIR)
 	@rm -rf "$(RELEASE_DIR)/GLYPH Studio.app"
 	cp -R "$(DERIVED_DATA)/Build/Products/Release/GLYPHApp.app" "$(RELEASE_DIR)/GLYPH Studio.app"
@@ -26,7 +31,7 @@ package: build
 	plutil -replace CFBundleIconFile -string "AppIcon" "$(RELEASE_DIR)/GLYPH Studio.app/Contents/Info.plist"
 	codesign --force --sign - --timestamp=none "$(RELEASE_DIR)/GLYPH Studio.app"
 	cd $(RELEASE_DIR) && rm -f GLYPH-Studio-v1.0.0-macOS.zip checksums.txt
-	cd $(RELEASE_DIR) && zip -r -y GLYPH-Studio-v1.0.0-macOS.zip "GLYPH Studio.app"
+	cd $(RELEASE_DIR) && zip -r -y GLYPH-Studio-v1.0.0-macOS.zip "GLYPH Studio.app" glyph
 	cd $(RELEASE_DIR) && shasum -a 256 GLYPH-Studio-v1.0.0-macOS.zip > checksums.txt
 	@echo "Package created in $(RELEASE_DIR)/"
 
